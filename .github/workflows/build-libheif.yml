@@ -25,10 +25,11 @@ jobs:
       - name: Rename folder
         run: mv ${{ steps.find_folder.outputs.libheif_folder }} libheif
 
-      - name: Change build file
+      - name: Replace build file
         run: |
           rm libheif/build-emscripten.sh
           cp build-emscripten.sh libheif/build-emscripten.sh
+          chmod +x libheif/build-emscripten.sh
 
       - name: Install emscripten
         working-directory: libheif
