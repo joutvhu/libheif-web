@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     env:
-      EMSCRIPTEN_VERSION: 3.1.18
+      EMSCRIPTEN_VERSION: 1.40.1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
