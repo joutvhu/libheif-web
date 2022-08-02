@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     env:
-      EMSCRIPTEN_VERSION: 1.37.26
+      EMSCRIPTEN_VERSION: 3.1.18
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
         run: |
           ./scripts/run-ci.sh
 
-      - name: List file
+      - name: List files
         run: ls -a -R
 
       - name: Upload artifact
