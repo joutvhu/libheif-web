@@ -1,0 +1,55 @@
+name: 'Build libheif'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    env:
+      EMSCRIPTEN_VERSION: 1.37.26
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Find libheif file
+        id: find_file
+        run: echo ::set-output name=libheif_file::$(find libheif-*.tar.gz)
+
+      - name: Extract some files
+        run: tar -xf ${{ steps.find_file.outputs.libheif_file }}
+
+      - name: Find libheif folder
+        id: find_folder
+        run: echo ::set-output name=libheif_folder::$(find libheif-* -maxdepth 0 -type d)
+
+      - name: Rename folder
+        run: mv ${{ steps.find_folder.outputs.libheif_folder }} libheif
+
+      - name: Change build file
+        run: |
+          rm libheif/build-emscripten.sh
+          cp build-emscripten.sh libheif/build-emscripten.sh
+
+      - name: Install emscripten
+        working-directory: libheif
+        run: |
+          ./scripts/install-ci-linux.sh
+
+      - name: Prepare CI
+        working-directory: libheif
+        run: |
+          ./scripts/prepare-ci.sh
+
+      - name: Run CI
+        working-directory: libheif
+        run: |
+          ./scripts/run-ci.sh
+
+      - name: List file
+        run: ls -a -R
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: libheif-js
+          path: libheif/libheif.js
