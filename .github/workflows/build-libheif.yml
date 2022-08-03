@@ -93,24 +93,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16
-      
+
       - name: Install packages
-        run: npm ci
+        run: npm i -g unminify
 
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: libheif-js
           path: dist
-      
+
       - name: Unminify libheif
-        run: npx unminify dist/libheif.min.js | sudo tee dist/libheif.js
+        run: unminify dist/libheif.min.js | sudo tee dist/libheif.js
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
