@@ -2,6 +2,11 @@ name: 'Build libheif'
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: libheif Version
+        required: true
+        default: 1.12.0
 
 jobs:
   build:
@@ -11,25 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Find libheif file
-        id: find_file
-        run: echo ::set-output name=libheif_file::$(find libheif-*.tar.gz)
-
-      - name: Extract some files
-        run: tar -xf ${{ steps.find_file.outputs.libheif_file }}
-
-      - name: Find libheif folder
-        id: find_folder
-        run: echo ::set-output name=libheif_folder::$(find libheif-* -maxdepth 0 -type d)
-
-      - name: Rename folder
-        run: mv ${{ steps.find_folder.outputs.libheif_folder }} libheif
-
-      # - name: Replace build file
-      #   run: |
-      #     rm libheif/build-emscripten.sh
-      #     cp build-emscripten.sh libheif/build-emscripten.sh
-      #     chmod +x libheif/build-emscripten.sh
+      - name: Download and extract libheif
+        run: |
+          chmod +x download-libheif.sh
+          ./download-libheif.sh ${{ github.event.inputs.version }} --extract
 
       - name: Install emscripten
         working-directory: libheif
