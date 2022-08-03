@@ -38,8 +38,8 @@ jobs:
         id: set_release
         if: ${{ github.event.inputs.version == null && endsWith(steps.current_release.outputs.tag_name, '_libheif') }}
         run: |
-          echo ::set-output name=release::true
-          echo ::set-output name=version::$(echo ${{ github.event.inputs.version }} | cut -c 2- | cut -f 1 -d _)
+          echo "::set-output name=release::true"
+          echo "::set-output name=version::$(echo ${{ steps.current_release.outputs.tag_name }} | cut -c 2- | cut -f 1 -d _)"
 
       - name: Cancel action
         if: ${{ github.event.inputs.version == null && !endsWith(steps.current_release.outputs.tag_name, '_libheif') }}
