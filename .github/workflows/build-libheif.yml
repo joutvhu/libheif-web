@@ -42,9 +42,7 @@ jobs:
           rm -rf dist/*
           cp libheif/libheif.js dist/libheif.js
           cp libheif/COPYING dist/LICENSE
-
-      - name: List files
-        run: ls -a -R
+          ls -a -R
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
