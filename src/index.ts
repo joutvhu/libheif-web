@@ -1,6 +1,8 @@
 let loader: Promise<any> | null = null;
 let libheif: any = null;
 
+let libheifUrl: string = 'https://github.com/joutvhu/libheif-web/releases/download/v1.12.0_libheif/libheif.min.js';
+
 const loadLib = async () => {
   if (libheif == null) {
     if (loader != null)
@@ -8,7 +10,7 @@ const loadLib = async () => {
     loader = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.type = 'text/javascript';
-      script.src = 'assets/scripts/libheif.min.js';
+      script.src = libheifUrl;
       script.onload = event => {
         libheif = (window as any).libheif;
         if (libheif == null)
@@ -88,6 +90,11 @@ const decodeBuffer = async (options: { buffer: any, all: boolean }) => {
     };
   });
 };
+
+export const useUrl = (url: string) => {
+  if (typeof url === 'string')
+    libheifUrl = url;
+}
 
 export const convert = async (buffer: any) => {
   await loadLib();
