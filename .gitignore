@@ -136,3 +136,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Output files
+lib/
