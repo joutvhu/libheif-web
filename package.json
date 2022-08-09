@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "An emscripten build of libheif distributed as an npm module for the browser.",
   "scripts": {
-    "build": "tsc --project tsconfig.json"
+    "publish": "npm publish",
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint --ext .ts ./src/**/*"
   },
   "author": {
     "name": "Giao Ho",

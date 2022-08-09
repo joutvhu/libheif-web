@@ -7,6 +7,7 @@
     "outDir": "./lib",
     "strict": true,
     "declaration": true,
+    "sourceMap": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
     "removeComments": true,
