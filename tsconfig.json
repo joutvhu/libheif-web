@@ -6,7 +6,7 @@
     "rootDir": "./src",
     "outDir": "./lib",
     "strict": true,
-    "declaration": false,
+    "declaration": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
     "removeComments": true,

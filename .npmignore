@@ -221,5 +221,13 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Source
+src/
+
 # LibHeif
 libheif.sh
+
+# Config
+.github/
+.gitignore
+.editorconfig

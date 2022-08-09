@@ -2,11 +2,33 @@
   "name": "libheif-web",
   "version": "1.0.0",
   "description": "An emscripten build of libheif distributed as an npm module for the browser.",
-  "repository": "https://github.com/joutvhu/libheif-web",
-  "license": "MIT",
   "scripts": {
     "build": "tsc --project tsconfig.json"
   },
+  "author": {
+    "name": "Giao Ho",
+    "email": "joutvhu@gmail.com",
+    "url": "https://github.com/joutvhu"
+  },
+  "homepage": "https://github.com/joutvhu/libheif-web",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joutvhu/libheif-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joutvhu/libheif-web/issues"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "libheif",
+    "convert",
+    "browser"
+  ],
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/node": "^16.11.47",
