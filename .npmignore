@@ -229,5 +229,7 @@ libheif.sh
 
 # Config
 .github/
-.gitignore
 .editorconfig
+.eslintrc
+.gitignore
+tsconfig.json

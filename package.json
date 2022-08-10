@@ -5,7 +5,7 @@
   "scripts": {
     "publish": "npm publish",
     "build": "tsc --project tsconfig.json",
-    "lint": "eslint --ext .ts ./src/**/*"
+    "lint": "eslint --ext .ts ./src/**/* --fix"
   },
   "author": {
     "name": "Giao Ho",

@@ -1,35 +1,41 @@
+let libheifUrl: string | null = null;
 let loader: Promise<any> | null = null;
 let libheif: any = null;
 
-let libheifUrl: string = 'https://github.com/joutvhu/libheif-web/releases/download/v1.12.0_libheif/libheif.min.js';
+const defaultLibheifUrl = 'https://github.com/joutvhu/libheif-web/releases/download/v1.12.0_libheif/libheif.min.js';
 
-const loadLib = async () => {
+export const loadLib = async () => {
   if (libheif == null) {
-    if (loader != null)
-      return await loader;
-    loader = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = libheifUrl;
-      script.onload = event => {
-        libheif = (window as any).libheif;
-        if (libheif == null)
+    if (loader == null) {
+      loader = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = libheifUrl ?? defaultLibheifUrl;
+        script.onload = event => {
+          libheif = (window as any).libheif;
+          if (libheif == null)
+            reject(event);
+          resolve(libheif);
+        };
+        script.onerror = event => {
+          loader = null;
+          document.head.removeChild(script);
           reject(event);
-        resolve(libheif);
-      };
-      script.onerror = event => {
-        loader = null;
-        document.head.removeChild(script);
-        reject(event);
-      };
-      document.head.appendChild(script);
-    });
+        };
+        document.head.appendChild(script);
+      });
+    }
     return await loader;
   }
   return libheif;
 };
 
-const isHeic = (buffer: any) => {
+export const useUrl = (url: string): void => {
+  if (typeof url === 'string')
+    libheifUrl = url;
+};
+
+export const isHeic = (buffer: any): boolean => {
   const brandMajor = new TextDecoder('utf-8')
     .decode(buffer.slice(8, 12))
     .replace('\0', ' ')
@@ -51,7 +57,17 @@ const isHeic = (buffer: any) => {
   return false;
 };
 
-const decodeImage = async (image: any) => {
+interface ImageData {
+  width: any;
+  height: any;
+  data: any;
+}
+
+interface ImageDecoder {
+  decode: () => Promise<ImageData>;
+}
+
+export const decodeImage = async (image: any): Promise<ImageData> => {
   const width = image.get_width();
   const height = image.get_height();
 
@@ -68,7 +84,9 @@ const decodeImage = async (image: any) => {
   return {width, height, data: arrayBuffer};
 };
 
-const decodeBuffer = async (options: { buffer: any, all: boolean }) => {
+export const decodeBuffer = async (options: { buffer: any, all: boolean }): Promise<ImageData | ImageDecoder[]> => {
+  const libheif = await loadLib();
+
   if (!isHeic(options.buffer)) {
     throw new TypeError('input buffer is not a HEIC image');
   }
@@ -91,22 +109,15 @@ const decodeBuffer = async (options: { buffer: any, all: boolean }) => {
   });
 };
 
-export const useUrl = (url: string) => {
-  if (typeof url === 'string')
-    libheifUrl = url;
-}
-
-export const convert = async (buffer: any) => {
-  await loadLib();
-  return await decodeBuffer({buffer, all: false});
+export const convert = async (buffer: any): Promise<ImageData> => {
+  return await decodeBuffer({buffer, all: false}) as ImageData;
 };
 
-export const convertAll = async (buffer: any) => {
-  await loadLib();
-  return await decodeBuffer({buffer, all: true});
+export const convertAll = async (buffer: any): Promise<ImageDecoder[]> => {
+  return await decodeBuffer({buffer, all: true}) as ImageDecoder[];
 };
 
-export const encodeByCanvas = async (image: any) => {
+export const encodeByCanvas = async (image: ImageData): Promise<HTMLCanvasElement> => {
   const clamped = new Uint8ClampedArray(image.data);
   const iData = new ImageData(clamped, image.width, image.height);
   const img = await createImageBitmap(iData);
@@ -114,20 +125,83 @@ export const encodeByCanvas = async (image: any) => {
   canvas.width = image.width;
   canvas.height = image.height;
   canvas.getContext('2d')?.drawImage(img, 0, 0, image.width, image.height);
-  return await new Promise<Blob>((resolve, reject) => canvas.toBlob(blob => {
-    if (blob != null)
-      resolve(blob)
-    else
-      reject(`Can't convert canvas to blob.`);
-  }));
+  return canvas;
 };
 
-export const convertHeic = async (file: File) => {
-  const inputBuffer = await file.arrayBuffer();
-  const output = await convert(inputBuffer);
-  const result = await encodeByCanvas(output);
-  return new File([result], file.name + '.png', {
+export const toDataURL = async (image: ImageData, type?: string, quality?: any): Promise<string> => {
+  const canvas = await encodeByCanvas(image);
+  return canvas.toDataURL(type, quality);
+};
+
+export const toBlob = async (image: ImageData, type?: string, quality?: any): Promise<Blob> => {
+  const canvas = await encodeByCanvas(image);
+  return await new Promise<Blob>((resolve, reject) => canvas.toBlob(blob => {
+    if (blob != null)
+      resolve(blob);
+    else
+      reject(`Can't convert canvas to blob.`);
+  }, type, quality));
+};
+
+const fileSuffix = (type = 'image/png'): string => {
+  switch (type) {
+    case 'image/bmp':
+      return '.bmp';
+    case 'image/gif':
+      return '.bmp';
+    case 'image/jpeg':
+      return '.jpg';
+    case 'image/tiff':
+      return '.tif';
+    case 'image/webp':
+      return '.webp';
+    case 'image-xbitmap':
+    case 'image/xbm':
+      return '.xbm';
+    case 'image/vnd.microsoft.icon':
+    case 'image/x-icon':
+      return '.ico';
+    case 'image/svg+xml':
+      return '.svg';
+    case 'image/avif':
+      return '.avif';
+    case 'image/apng':
+      return '.apng';
+    case 'image/png':
+    default:
+      return '.png';
+  }
+};
+
+export const toFile = async (image: ImageData, filename: string, type?: string, quality?: any): Promise<File> => {
+  const result = await toBlob(image, type, quality);
+  return new File([result], filename, {
     lastModified: Date.now(),
     type: result.type
   });
+};
+
+export const convertBuffer = async (buffer: any, filename: string, type?: string, quality?: any): Promise<File> => {
+  const image = await convert(buffer);
+  return await toFile(image, filename, type, quality);
+};
+
+export const convertHeif = async (file: File, filename?: string, type?: string, quality?: any): Promise<File> => {
+  const inputBuffer = await file.arrayBuffer();
+  return await convertBuffer(inputBuffer, filename ?? file.name + fileSuffix(type), type, quality);
+};
+
+interface ImageConverter {
+  convert: (filename?: string, type?: string, quality?: any) => Promise<File>;
+}
+
+export const convertAllOfHeif = async (file: File): Promise<ImageConverter[]> => {
+  const inputBuffer = await file.arrayBuffer();
+  const images = await convertAll(inputBuffer);
+  return images.map(data => ({
+    convert: async (filename?: string, type?: string, quality?: any) => {
+      const image = await data.decode();
+      return await toFile(image, filename ?? file.name + fileSuffix(type), type, quality);
+    }
+  }));
 };
