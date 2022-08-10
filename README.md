@@ -14,10 +14,22 @@ Download [libheif.min.js](https://github.com/joutvhu/libheif-web/releases/downlo
 
 Use following code to set url for libheif.
 
-```js
-import useUrl from 'libheif-web';
+```ts
+import {useUrl} from 'libheif-web';
 
 useUrl('assets/scripts/libheif.min.js');
 ```
 
 If you skip this step the url will automatically point to [libheif.min.js](https://github.com/joutvhu/libheif-web/releases/download/v1.12.0_libheif/libheif.min.js)
+
+## Using
+
+```ts
+import {convertHeif, convertAllOfHeif} from 'libheif-web';
+
+const pngImage = await convertHeif(heicFile, 'filename.png', 'image/png');
+
+const images = await convertAllOfHeif(heicFile);
+const firstPng = await images[0].convert('filename.png', 'image/png');
+const secondPng = await images[1].convert('filename.png', 'image/png');
+```
