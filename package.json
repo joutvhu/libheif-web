@@ -1,10 +1,17 @@
 {
   "name": "libheif-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An emscripten build of libheif distributed as an npm module for the browser.",
   "scripts": {
     "publish": "npm publish",
-    "build": "tsc --project tsconfig.json",
+    "build": "npm run build:declaration && npm run build:umd && npm run build:esm2015 && npm run build:esm2020",
+    "build:declaration": "tsc --project tsconfig.json --declaration true --declarationDir . --emitDeclarationOnly",
+    "build:umd": "tsc --project tsconfig.json --module umd --outDir bundles",
+    "build:commonjs": "tsc --project tsconfig.json --module commonjs --outDir commonjs",
+    "build:amd": "tsc --project tsconfig.json --module amd --outDir amd",
+    "build:esm2015": "tsc --project tsconfig.json --target es2015 --module es2015 --outDir esm2015",
+    "build:esm2020": "tsc --project tsconfig.json --target es2020 --module es2020 --outDir esm2020",
+    "build:esm2022": "tsc --project tsconfig.json --target es2022 --module es2022 --outDir esm2022",
     "lint": "eslint --ext .ts ./src/**/* --fix"
   },
   "author": {
@@ -24,8 +31,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "index.d.ts",
+  "main": "bundles/index.js",
+  "esm2015": "esm2015/index.js",
+  "esm2020": "esm2020/index.js",
   "keywords": [
     "libheif",
     "convert",

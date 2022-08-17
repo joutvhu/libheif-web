@@ -138,4 +138,17 @@ testem.log
 Thumbs.db
 
 # Output files
+*.d.ts
 lib/
+bundles/
+commonjs/
+amd/
+es2015/
+esm2015/
+fesm2015/
+es2020/
+esm2020/
+fesm2020/
+es2022/
+esm2022/
+fesm2022/

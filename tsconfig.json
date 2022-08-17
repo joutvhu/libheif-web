@@ -6,7 +6,7 @@
     "rootDir": "./src",
     "outDir": "./lib",
     "strict": true,
-    "declaration": true,
+    "declaration": false,
     "sourceMap": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
@@ -18,7 +18,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "target": "es2015",
-    "module": "commonjs",
+    "module": "umd",
     "lib": [
       "es2016",
       "es2017",
