@@ -3,7 +3,6 @@
   "version": "1.0.1",
   "description": "An emscripten build of libheif distributed as an npm module for the browser.",
   "scripts": {
-    "publish": "npm publish",
     "build": "npm run build:declaration && npm run build:umd && npm run build:esm2015 && npm run build:esm2020",
     "build:declaration": "tsc --project tsconfig.json --declaration true --declarationDir . --emitDeclarationOnly",
     "build:umd": "tsc --project tsconfig.json --module umd --outDir bundles",
