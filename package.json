@@ -3,14 +3,16 @@
   "version": "1.0.1",
   "description": "An emscripten build of libheif distributed as an npm module for the browser.",
   "scripts": {
-    "build": "npm run build:declaration && npm run build:umd && npm run build:esm2015 && npm run build:esm2020",
+    "build": "npm run build:declaration && npm run build:rollup && npm run build:esm2015 && npm run build:esm2020 && npm run build:esm2022",
     "build:declaration": "tsc --project tsconfig.json --declaration true --declarationDir . --emitDeclarationOnly",
-    "build:umd": "tsc --project tsconfig.json --module umd --outDir bundles",
-    "build:commonjs": "tsc --project tsconfig.json --module commonjs --outDir commonjs",
+    "build:main": "tsc --project tsconfig.json --outDir bundles",
+    "build:cjs": "tsc --project tsconfig.json --module commonjs --outDir cjs",
     "build:amd": "tsc --project tsconfig.json --module amd --outDir amd",
+    "build:umd": "tsc --project tsconfig.json --module umd --outDir umd",
     "build:esm2015": "tsc --project tsconfig.json --target es2015 --module es2015 --outDir esm2015",
     "build:esm2020": "tsc --project tsconfig.json --target es2020 --module es2020 --outDir esm2020",
     "build:esm2022": "tsc --project tsconfig.json --target es2022 --module es2022 --outDir esm2022",
+    "build:rollup": "rollup --config rollup.config.ts",
     "lint": "eslint --ext .ts ./src/**/* --fix"
   },
   "author": {
@@ -32,13 +34,21 @@
   },
   "types": "index.d.ts",
   "main": "bundles/index.js",
+  "module": "fesm2015/index.js",
   "esm2015": "esm2015/index.js",
+  "fesm2015": "fesm2015/index.js",
   "esm2020": "esm2020/index.js",
+  "fesm2020": "fesm2020/index.js",
+  "esm2022": "esm2022/index.js",
+  "fesm2022": "fesm2022/index.js",
   "keywords": [
     "libheif",
     "convert",
     "browser"
   ],
+  "dependencies": {
+    "tslib": ">=2.0.0"
+  },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/node": "^16.11.47",
@@ -50,6 +60,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
+    "rollup": "^2.78.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.33.0",
     "typescript": "^4.7.4"
   }
 }

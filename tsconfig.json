@@ -16,9 +16,10 @@
     "downlevelIteration": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "target": "es2015",
-    "module": "umd",
+    "module": "es2015",
     "lib": [
       "es2016",
       "es2017",
