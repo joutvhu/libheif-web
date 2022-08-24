@@ -16,7 +16,7 @@ export default [
         tsconfigOverride: {
           target: 'es2015',
           module: 'umd'
-        },
+        }
       }),
       terser()
     ],
@@ -32,7 +32,7 @@ export default [
         tsconfigOverride: {
           target: 'es2015',
           module: 'es2015'
-        },
+        }
       }),
       terser()
     ],

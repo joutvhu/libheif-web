@@ -1,33 +1,10 @@
-let libheifUrl: string | null = null;
-let loader: Promise<any> | null = null;
-let libheif: any = null;
+import {loadLibrary} from 'libjs-loader';
 
+let libheifUrl: string | null = null;
 const defaultLibheifUrl = 'https://github.com/joutvhu/libheif-web/releases/download/v1.12.0_libheif/libheif.min.js';
 
 export const loadLib = async () => {
-  if (libheif == null) {
-    if (loader == null) {
-      loader = new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = libheifUrl ?? defaultLibheifUrl;
-        script.onload = event => {
-          libheif = (window as any).libheif;
-          if (libheif == null)
-            reject(event);
-          resolve(libheif);
-        };
-        script.onerror = event => {
-          loader = null;
-          document.head.removeChild(script);
-          reject(event);
-        };
-        document.head.appendChild(script);
-      });
-    }
-    return await loader;
-  }
-  return libheif;
+  return await loadLibrary(libheifUrl ?? defaultLibheifUrl, 'libheif');
 };
 
 export const useUrl = (url: string): void => {
@@ -85,7 +62,7 @@ export const decodeImage = async (image: any): Promise<ImageData> => {
 };
 
 export const decodeBuffer = async (options: { buffer: any, all: boolean }): Promise<ImageData | ImageDecoder[]> => {
-  const libheif = await loadLib();
+  const libheif: any = await loadLib();
 
   if (!isHeic(options.buffer)) {
     throw new TypeError('input buffer is not a HEIC image');
