@@ -11,3 +11,5 @@ updates:
       interval: "weekly"
     assignees:
       - "joutvhu"
+    ignore:
+      - dependency-name: "@types/node"
