@@ -4,11 +4,6 @@ on:
   schedule:
     - cron: '0 0 * * 0'
   workflow_dispatch:
-    inputs:
-      version:
-        description: libheif Version
-        required: true
-        default: 1.12.0
 
 jobs:
   check:

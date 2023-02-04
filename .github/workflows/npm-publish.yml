@@ -14,7 +14,7 @@ jobs:
       contents: write
       packages: write
     outputs:
-      continue: ${{ steps.set_release.outputs.continue }}
+      continue: ${{ steps.should_continue.outputs.continue || steps.should_stop.outputs.continue }}
     steps:
       - name: Get Current Release
         id: current_release
@@ -22,8 +22,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set default outputs
-        id: default_outputs
+      - name: Should continue
+        id: should_continue
+        if: ${{ !endsWith(steps.current_release.outputs.tag_name, '_libheif') }}
         run: |
           echo "::set-output name=continue::true"
 
