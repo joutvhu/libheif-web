@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: write
       packages: write
+    outputs:
+      continue: ${{ steps.set_release.outputs.continue }}
     steps:
       - name: Get Current Release
         id: current_release
@@ -20,13 +22,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cancel action
+      - name: Set default outputs
+        id: default_outputs
+        run: |
+          echo "::set-output name=continue::true"
+
+      - name: Should stop
+        id: should_stop
         if: ${{ endsWith(steps.current_release.outputs.tag_name, '_libheif') }}
-        run: exit 1
+        run: |
+          echo "::set-output name=continue::false"
 
   publish:
     runs-on: ubuntu-latest
     needs: prepare
+    if: ${{ needs.prepare.outputs.continue }}
     steps:
       - uses: actions/checkout@v3
 
