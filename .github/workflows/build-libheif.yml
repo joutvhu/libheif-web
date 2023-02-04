@@ -132,10 +132,10 @@ jobs:
     steps:
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: joutvhu/create-release@v1
         with:
           tag_name: v${{ needs.check.outputs.version }}_libheif
-          release_name: Release libheif ${{ needs.check.outputs.name }}
+          name: Release libheif ${{ needs.check.outputs.name }}
           body: |
             Create libheif.js for https://github.com/strukturag/libheif/releases/tag/v${{ needs.check.outputs.version }}
             ${{ needs.check.outputs.body }}
