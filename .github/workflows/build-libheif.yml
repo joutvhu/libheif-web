@@ -13,7 +13,7 @@ jobs:
       name: ${{ steps.set_release.outputs.name }}
       body: ${{ steps.set_release.outputs.body }}
     steps:
-      - name: Get Current Release
+      - name: Get Libheif Release
         id: libheif_release
         uses: joutvhu/get-release@v1
         with:
