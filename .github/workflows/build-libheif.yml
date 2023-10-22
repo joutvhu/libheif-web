@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     env:
-      EMSCRIPTEN_VERSION: 1.37.40
+      EMSCRIPTEN_VERSION: 3.1.47
     if: ${{ needs.check.outputs.version != null }}
     steps:
       - uses: actions/checkout@v3
