@@ -121,7 +121,7 @@ jobs:
             dist/libheif.js
             dist/LICENSE
 
-      - uses: joutvhu/delete-artifact@v1
+      - uses: joutvhu/delete-artifact@v2
         with:
           name: libheif-js
 
@@ -188,6 +188,6 @@ jobs:
           asset_path: ./LICENSE
           asset_content_type: text/plain
 
-      - uses: joutvhu/delete-artifact@v1
+      - uses: joutvhu/delete-artifact@v2
         with:
           name: libheif

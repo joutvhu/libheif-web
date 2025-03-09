@@ -26,6 +26,9 @@
   "rules": {
     "@typescript-eslint/no-inferrable-types": [
       "warn"
+    ],
+    "@typescript-eslint/no-explicit-any": [
+      "warn"
     ]
   }
 }
