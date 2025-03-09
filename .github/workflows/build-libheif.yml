@@ -52,7 +52,7 @@ jobs:
       EMSCRIPTEN_VERSION: 3.1.61
     if: ${{ needs.check.outputs.version != null }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download and extract libheif
         run: |
@@ -83,7 +83,7 @@ jobs:
           ls -a -R
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libheif-js
           path: |
@@ -95,15 +95,15 @@ jobs:
     needs: build
     steps:
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Install packages
         run: npm i -g unminify
 
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: libheif-js
           path: dist
@@ -112,7 +112,7 @@ jobs:
         run: unminify dist/libheif.min.js | sudo tee dist/libheif.js
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libheif
           path: |
@@ -153,7 +153,7 @@ jobs:
       packages: write
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: libheif
 
