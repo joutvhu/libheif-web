@@ -100,7 +100,7 @@ jobs:
           node-version: 20
 
       - name: Install packages
-        run: npm i -g unminify
+        run: npm i -g webcrack
 
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -109,7 +109,8 @@ jobs:
           path: dist
 
       - name: Unminify libheif
-        run: unminify dist/libheif.min.js | sudo tee dist/libheif.js
+        run: webcrack libheif.min.js > libheif.js
+        working-directory: dist
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
