@@ -10,7 +10,7 @@ npm i libheif-web
 
 ### Set libheif url
 
-Download [libheif.min.js](https://github.com/joutvhu/libheif-web/releases/download/v1.14.0_libheif/libheif.min.js) from the [libheif v1.14.0 release](https://github.com/joutvhu/libheif-web/releases/tag/v1.14.0_libheif) and put it in your project's `assets` folder.
+Download [libheif.min.js](https://github.com/joutvhu/libheif-web/releases/download/v1.14.0_libheif/libheif.min.js) from the [libheif v1.12.0 release](https://github.com/joutvhu/libheif-web/releases/tag/v1.12.0_libheif) and put it in your project's `assets` folder.
 
 Use following code to set url for libheif.
 
